@@ -1,12 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { appReducer } from '@/features/appSlice';
+import createSagaMiddleware from 'redux-saga';
+import { operatorsSaga } from '@/features/table/sagas';
+
+const saga = createSagaMiddleware();
 
 const store = configureStore({
 	reducer: {
 		app: appReducer,
 	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(saga),
 });
+
+saga.run(operatorsSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 
