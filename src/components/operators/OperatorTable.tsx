@@ -1,4 +1,4 @@
-import { Operator } from '@/features/table/types';
+import { Operator, OperatorAddon } from '@/features/table/types';
 import { formatDate } from '@/utils/formatting';
 import {
 	Button,
@@ -16,6 +16,7 @@ import { useSearchParams } from 'react-router-dom';
 
 type Props = {
 	operators: Operator[];
+	addon: OperatorAddon[];
 	onSortChange: (sortField: string, sortOrder: 'asc' | 'desc') => void;
 	sort: [string, 'asc' | 'desc'];
 	isLoading: boolean;
@@ -32,7 +33,7 @@ const DEFAULT_COLUMNS = [
 	{ id: 'customField', label: 'Custom Field', sortable: false },
 ];
 
-export function OperatorTable({ operators, onSortChange, sort, isLoading }: Props) {
+export function OperatorTable({ operators, onSortChange, sort, isLoading, addon }: Props) {
 	const [, setSearchParams] = useSearchParams();
 	const [sortField, sortOrder] = sort;
 
@@ -91,7 +92,7 @@ export function OperatorTable({ operators, onSortChange, sort, isLoading }: Prop
 								</TableCell>
 								<TableCell>{operator.name}</TableCell>
 								<TableCell>{formatDate(operator.createdAt, true)}</TableCell>
-								<TableCell>Todo</TableCell>
+								<TableCell>{addon.find(({ id }) => id === operator.id)?.text || 'Not found'}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

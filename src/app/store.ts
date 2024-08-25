@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import { appReducer } from '@/features/appSlice';
 import createSagaMiddleware from 'redux-saga';
-import { operatorsSaga } from '@/features/table/sagas';
+import { operatorsAddonSaga, operatorsSaga } from '@/features/table/sagas';
 import { tableReducer } from '@/features/table/tableSlice';
 
 const saga = createSagaMiddleware();
@@ -16,6 +16,7 @@ const store = configureStore({
 });
 
 saga.run(operatorsSaga);
+saga.run(operatorsAddonSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 

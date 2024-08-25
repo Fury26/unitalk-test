@@ -1,4 +1,4 @@
-import { BooleanFilter, DateFilter, FiltersConfig, FilterType, TextFilter } from '@/components/filters';
+import { BooleanFilter, FiltersConfig, FilterType, TextFilter } from '@/components/filters';
 import { Stack } from '@mui/material';
 
 type Props = {
@@ -14,9 +14,6 @@ export const Filters = ({ config }: Props) => {
 						return <TextFilter key={filter.field} field={filter.field} label={filter.label} />;
 					case FilterType.Boolean:
 						return <BooleanFilter key={filter.field} field={filter.field} label={filter.label} />;
-					case FilterType.DateRange:
-						return <DateFilter key={filter.field} fromUrl={filter.fromUrl} toUrl={filter.toUrl} />;
-					// return <RangeDatePicker key={filter.field} from={fromDayjs} to={toDayjs} onChange={onChange} />;
 					default:
 						return null;
 				}
