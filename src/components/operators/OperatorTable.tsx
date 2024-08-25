@@ -1,8 +1,7 @@
-import { BooleanFilter, FilterType, TextFilter } from '@/components/filters';
 import { Operator } from '@/features/table/types';
-import { useSearchParams } from '@/hooks/useSearchParams';
 import { formatDate } from '@/utils/formatting';
 import {
+	Button,
 	Checkbox,
 	Stack,
 	Table,
@@ -13,50 +12,48 @@ import {
 	TableRow,
 	TableSortLabel,
 } from '@mui/material';
-import { useMemo } from 'react';
-
-const TABLE_FILTERS = [
-	{ field: 'name', type: FilterType.Text, label: 'Name' },
-	{ field: 'isWorking', type: FilterType.Boolean, label: 'Is Working' },
-];
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
 	operators: Operator[];
+	onSortChange: (sortField: string, sortOrder: 'asc' | 'desc') => void;
+	sort: [string, 'asc' | 'desc'];
+	isLoading: boolean;
 };
 
-const DEFAULT_SORT = 'name:asc';
-
-type SortParam = [string, 'asc' | 'desc'];
-
 const DEFAULT_COLUMNS = [
+	{
+		id: 'isWorking',
+		label: 'Is Working',
+		sortable: true,
+	},
 	{ id: 'name', label: 'Name', sortable: true },
-	{ id: 'createdAt', label: 'Created At', sortable: true },
-	{ id: 'isWorking', label: 'Is Working', sortable: true },
+	{ id: 'createdAt', label: 'Created At', sortable: false },
 	{ id: 'customField', label: 'Custom Field', sortable: false },
 ];
 
-export function OperatorTable({ operators }: Props) {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [sortField, sortOrder] = useMemo(
-		() => (searchParams.get('sort') || DEFAULT_SORT).split(':') as SortParam,
-		[searchParams],
-	);
+export function OperatorTable({ operators, onSortChange, sort, isLoading }: Props) {
+	const [, setSearchParams] = useSearchParams();
+	const [sortField, sortOrder] = sort;
+
+	if (isLoading && !operators.length) {
+		return <Stack>Loading...</Stack>;
+	}
+
+	if (!operators.length && !isLoading) {
+		return (
+			<Stack direction="column" justifyItems="center" alignItems="center" sx={{ height: 300 }} gap={2}>
+				No operators found!
+				<Button variant="contained" onClick={() => setSearchParams({})}>
+					Clear Filters
+				</Button>
+			</Stack>
+		);
+	}
 
 	return (
 		<>
-			<Stack direction="row" spacing={4}>
-				{TABLE_FILTERS.map((filter) => {
-					switch (filter.type) {
-						case FilterType.Text:
-							return <TextFilter key={filter.field} field={filter.field} label={filter.label} />;
-						case FilterType.Boolean:
-							return <BooleanFilter key={filter.field} field={filter.field} label={filter.label} />;
-						default:
-							return null;
-					}
-				})}
-			</Stack>
-			<TableContainer>
+			<TableContainer sx={{ opacity: isLoading ? 0.7 : 1 }}>
 				<Table>
 					<TableHead>
 						<TableRow>
@@ -66,12 +63,16 @@ export function OperatorTable({ operators }: Props) {
 										<TableSortLabel
 											active={sortField === column.id}
 											direction={sortField === column.id ? sortOrder : undefined}
-											onClick={() => {
-												setSearchParams(
-													'sort',
-													`${column.id}:${sortField === column.id ? (sortOrder === 'asc' ? 'desc' : 'asc') : 'asc'}`,
-												);
-											}}
+											onClick={() =>
+												onSortChange(
+													column.id,
+													sortField === column.id
+														? sortOrder === 'asc'
+															? 'desc'
+															: 'asc'
+														: 'asc',
+												)
+											}
 										>
 											{column.label}
 										</TableSortLabel>

@@ -31,10 +31,10 @@
     "test:e2e:ci": "vite build && pnpm preview:test 'cypress run --record'"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.21",
-    "@mui/material": "^5.15.21",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.16.7",
+    "@mui/material": "^5.16.7",
     "@mui/x-date-pickers": "^7.14.0",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.5",
@@ -56,6 +56,7 @@
     "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "prettier": "^3.3.2",
     "typescript": "^5.5.3",

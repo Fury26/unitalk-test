@@ -19,7 +19,7 @@ const tableSlice = createSlice({
 	name: 'table',
 	initialState,
 	reducers: {
-		getOperatorsFetch: (state) => {
+		getOperatorsFetch: (state, props) => {
 			state.loadingOperators = true;
 		},
 		getOperatorsSuccess: (state, action: PayloadAction<Operator[]>) => {
