@@ -28,8 +28,6 @@ const OperatorsPage = () => {
 		useOperatorsSearchParams();
 
 	useEffect(() => {
-		console.log("fetching operators");
-
 		dispacth(
 			getOperatorsFetch({
 				page,
