@@ -1,5 +1,10 @@
-import { BooleanFilter, FiltersConfig, FilterType, TextFilter } from '@/components/filters';
-import { Stack } from '@mui/material';
+import {
+	BooleanFilter,
+	FilterType,
+	type FiltersConfig,
+	TextFilter,
+} from "@/components/filters";
+import { Stack } from "@mui/material";
 
 type Props = {
 	config: FiltersConfig;
@@ -11,9 +16,21 @@ export const Filters = ({ config }: Props) => {
 			{config.map((filter) => {
 				switch (filter.type) {
 					case FilterType.Text:
-						return <TextFilter key={filter.field} field={filter.field} label={filter.label} />;
+						return (
+							<TextFilter
+								key={filter.field}
+								field={filter.field}
+								label={filter.label}
+							/>
+						);
 					case FilterType.Boolean:
-						return <BooleanFilter key={filter.field} field={filter.field} label={filter.label} />;
+						return (
+							<BooleanFilter
+								key={filter.field}
+								field={filter.field}
+								label={filter.label}
+							/>
+						);
 					default:
 						return null;
 				}

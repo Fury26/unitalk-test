@@ -1,10 +1,10 @@
-import dayjs, { Dayjs } from 'dayjs';
-import { useCallback, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import dayjs, { type Dayjs } from "dayjs";
+import { useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
-export const URL_DATE_FORMAT = 'YYYY-MM-DD';
+export const URL_DATE_FORMAT = "YYYY-MM-DD";
 
-export const useUrlDateFilter = (fromUrl = 'from', toUrl = 'to') => {
+export const useUrlDateFilter = (fromUrl = "from", toUrl = "to") => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const { fromDayjs, toDayjs } = useMemo(() => {
@@ -15,16 +15,20 @@ export const useUrlDateFilter = (fromUrl = 'from', toUrl = 'to') => {
 		const toValue = searchTo ? dayjs(searchTo, URL_DATE_FORMAT) : null;
 
 		return { fromDayjs: fromValue, toDayjs: toValue };
-	}, [searchParams]);
+	}, [searchParams, fromUrl, toUrl]);
 
 	const onChange = useCallback(
 		(newFrom?: Dayjs | null, newTo?: Dayjs | null) => {
 			const prev = new URLSearchParams(searchParams);
-			newFrom ? prev.set(fromUrl, newFrom.format(URL_DATE_FORMAT)) : prev.delete(fromUrl);
-			newTo ? prev.set(toUrl, newTo.format(URL_DATE_FORMAT)) : prev.delete(toUrl);
+			newFrom
+				? prev.set(fromUrl, newFrom.format(URL_DATE_FORMAT))
+				: prev.delete(fromUrl);
+			newTo
+				? prev.set(toUrl, newTo.format(URL_DATE_FORMAT))
+				: prev.delete(toUrl);
 			setSearchParams(prev);
 		},
-		[searchParams, setSearchParams],
+		[searchParams, setSearchParams, fromUrl, toUrl],
 	);
 
 	const { from, to } = useMemo(

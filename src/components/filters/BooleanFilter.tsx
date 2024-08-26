@@ -1,20 +1,20 @@
-import useDebounce from '@/hooks/useDebounce';
-import { useSearchParams } from '@/hooks/useSearchParams';
-import { MenuItem, TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import useDebounce from "@/hooks/useDebounce";
+import { useSearchParams } from "@/hooks/useSearchParams";
+import { MenuItem, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const options = [
 	{
-		value: 'true',
-		label: 'True',
+		value: "true",
+		label: "True",
 	},
 	{
-		value: 'false',
-		label: 'False',
+		value: "false",
+		label: "False",
 	},
 	{
-		value: 'any',
-		label: 'Any',
+		value: "any",
+		label: "Any",
 	},
 ];
 
@@ -25,17 +25,19 @@ type Props = {
 
 export const BooleanFilter = ({ field, label }: Props) => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [temp, setTemp] = useState<string | null>(searchParams.get(field) || 'any');
+	const [temp, setTemp] = useState<string | null>(
+		searchParams.get(field) || "any",
+	);
 
 	const debounced = useDebounce(temp, 1000);
 
 	useEffect(() => {
-		setSearchParams(field, debounced === 'any' ? null : debounced);
-	}, [debounced]);
+		setSearchParams(field, debounced === "any" ? null : debounced);
+	}, [debounced, field, setSearchParams]);
 
 	useEffect(() => {
-		setTemp(searchParams.get(field) || 'any');
-	}, [searchParams.get(field)]);
+		setTemp(searchParams.get(field) || "any");
+	}, [searchParams, field]);
 
 	return (
 		<TextField
@@ -47,7 +49,11 @@ export const BooleanFilter = ({ field, label }: Props) => {
 			label={label}
 		>
 			{options.map((option) => (
-				<MenuItem key={option.value} value={option.value} onChange={() => setTemp(option.value)}>
+				<MenuItem
+					key={option.value}
+					value={option.value}
+					onChange={() => setTemp(option.value)}
+				>
 					{option.label}
 				</MenuItem>
 			))}

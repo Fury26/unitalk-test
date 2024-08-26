@@ -1,6 +1,10 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Operator, OperatorAddon } from '@/features/table/types';
-import { RootState } from '@/app/store';
+import type { RootState } from "@/app/store";
+import type { Operator, OperatorAddon } from "@/features/table/types";
+import {
+	type PayloadAction,
+	createSelector,
+	createSlice,
+} from "@reduxjs/toolkit";
 
 interface TableState {
 	operators: Operator[];
@@ -19,10 +23,10 @@ const initialState: TableState = {
 
 // Create the slice
 const tableSlice = createSlice({
-	name: 'table',
+	name: "table",
 	initialState,
 	reducers: {
-		getOperatorsFetch: (state, props) => {
+		getOperatorsFetch: (state, _props) => {
 			state.loadingOperators = true;
 		},
 		getOperatorsSuccess: (state, action: PayloadAction<Operator[]>) => {
@@ -59,7 +63,19 @@ export const {
 } = tableSlice.actions;
 
 const selectTable = (state: RootState) => state.table;
-export const selectOperators = createSelector(selectTable, (state) => state.operators);
-export const selectAddons = createSelector(selectTable, (state) => state.operatorAddons);
-export const selectLoadingOperators = createSelector(selectTable, (state) => state.loadingOperators);
-export const selectLoadingOperatorsAddon = createSelector(selectTable, (state) => state.loadingOperatorsAddon);
+export const selectOperators = createSelector(
+	selectTable,
+	(state) => state.operators,
+);
+export const selectAddons = createSelector(
+	selectTable,
+	(state) => state.operatorAddons,
+);
+export const selectLoadingOperators = createSelector(
+	selectTable,
+	(state) => state.loadingOperators,
+);
+export const selectLoadingOperatorsAddon = createSelector(
+	selectTable,
+	(state) => state.loadingOperatorsAddon,
+);

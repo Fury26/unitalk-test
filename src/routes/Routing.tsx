@@ -1,5 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from '@/pages/Operators/OperatorsPage';
+import Home from "@/pages/Operators/OperatorsPage";
+import { Route, Routes } from "react-router-dom";
 
 const Routing = () => {
 	return (

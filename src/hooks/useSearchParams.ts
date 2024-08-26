@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useSearchParams as hook } from 'react-router-dom';
+import { useCallback } from "react";
+import { useSearchParams as hook } from "react-router-dom";
 
 export const useSearchParams = () => {
 	const [searchParams, setSearchParams] = hook();
@@ -8,7 +8,9 @@ export const useSearchParams = () => {
 		(key: string, value?: string | number | null) => {
 			setSearchParams((prev) => {
 				const temp = new URLSearchParams(prev);
-				value || typeof value === 'number' ? temp.set(key, value.toString()) : temp.delete(key);
+				value || typeof value === "number"
+					? temp.set(key, value.toString())
+					: temp.delete(key);
 				return temp;
 			});
 		},

@@ -1,9 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-import { appReducer } from '@/features/appSlice';
-import createSagaMiddleware from 'redux-saga';
-import { operatorsAddonSaga, operatorsSaga } from '@/features/table/sagas';
-import { tableReducer } from '@/features/table/tableSlice';
+import { appReducer } from "@/features/appSlice";
+import { operatorsAddonSaga, operatorsSaga } from "@/features/table/sagas";
+import { tableReducer } from "@/features/table/tableSlice";
+import { configureStore } from "@reduxjs/toolkit";
+import {
+	type TypedUseSelectorHook,
+	useDispatch,
+	useSelector,
+} from "react-redux";
+import createSagaMiddleware from "redux-saga";
 
 const saga = createSagaMiddleware();
 
