@@ -1,5 +1,6 @@
 import useDebounce from "@/hooks/useDebounce";
 import { useSearchParams } from "@/hooks/useSearchParams";
+import { booleanParam } from "@/utils/params";
 import { MenuItem, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -26,7 +27,7 @@ type Props = {
 export const BooleanFilter = ({ field, label }: Props) => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [temp, setTemp] = useState<string | null>(
-		searchParams.get(field) || "any",
+		booleanParam.parse(searchParams.get(field)) || "any",
 	);
 
 	const debounced = useDebounce(temp, 1000);
@@ -36,7 +37,7 @@ export const BooleanFilter = ({ field, label }: Props) => {
 	}, [debounced, field, setSearchParams]);
 
 	useEffect(() => {
-		setTemp(searchParams.get(field) || "any");
+		setTemp(booleanParam.parse(searchParams.get(field)) || "any");
 	}, [searchParams, field]);
 
 	return (

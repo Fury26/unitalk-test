@@ -1,64 +1,35 @@
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { FilterType, type SortParam } from "@/components/filters";
+import { FilterType } from "@/components/filters";
 import { OperatorTable } from "@/components/operators/OperatorTable";
 import {
 	getOperatorsAddonFetch,
 	getOperatorsFetch,
 } from "@/features/table/tableSlice";
-import { useSearchParams } from "@/hooks/useSearchParams";
 import { Filters } from "@/pages/Operators/Filters";
-import { Container, TablePagination } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { OperatorsTablePagination } from "@/pages/Operators/OperatorsTablePagination";
+import { useOperatorsSearchParams } from "@/pages/Operators/useOperatorsSearchParams";
+
+import { Container } from "@mui/material";
+import { useEffect } from "react";
 
 const TABLE_FILTERS = [
 	{ field: "name", type: FilterType.Text, label: "Name" },
 	{ field: "isWorking", type: FilterType.Boolean, label: "Is Working" },
 ];
-const DEFAULT_SORT = "name:asc";
 
-const Home = () => {
+const OperatorsPage = () => {
 	const dispacth = useAppDispatch();
 
-	const [searchParams, setSearchParams] = useSearchParams();
 	const { operators, operatorAddons, loadingOperators } = useAppSelector(
 		(state) => state.table,
 	);
 
-	const [sortField, sortOrder] = useMemo(
-		() => (searchParams.get("sort") || DEFAULT_SORT).split(":") as SortParam,
-		[searchParams],
-	);
-
-	const { page, limit, name, isWorking } = useMemo(() => {
-		const params = new URLSearchParams(searchParams);
-		const page = Number(params.get("page") || "1");
-		const limit = Number(params.get("limit") || "10");
-		const isWorking = params.get("isWorking");
-		return {
-			page,
-			limit,
-			name: params.get("name"),
-			isWorking: isWorking === null ? null : isWorking === "true",
-		};
-	}, [searchParams]);
-
-	const pagination = useMemo(
-		() => (
-			<TablePagination
-				component="div"
-				count={-1}
-				page={page - 1}
-				onPageChange={(_, page) =>
-					setSearchParams("page", (page + 1).toString())
-				}
-				rowsPerPage={limit}
-				onRowsPerPageChange={(e) => setSearchParams("limit", e.target.value)}
-			/>
-		),
-		[page, limit, setSearchParams],
-	);
+	const { page, limit, name, isWorking, sortField, sortOrder, setSortParams } =
+		useOperatorsSearchParams();
 
 	useEffect(() => {
+		console.log("fetching operators");
+
 		dispacth(
 			getOperatorsFetch({
 				page,
@@ -78,19 +49,17 @@ const Home = () => {
 	return (
 		<Container sx={{ py: 2, position: "relative" }}>
 			<Filters config={TABLE_FILTERS} />
-			{pagination}
+			<OperatorsTablePagination />
 			<OperatorTable
 				isLoading={loadingOperators}
 				addon={operatorAddons}
 				operators={operators}
 				sort={[sortField, sortOrder]}
-				onSortChange={(field, order) =>
-					setSearchParams("sort", `${field}:${order}`)
-				}
+				onSortChange={setSortParams}
 			/>
-			{pagination}
+			<OperatorsTablePagination />
 		</Container>
 	);
 };
 
-export default Home;
+export default OperatorsPage;

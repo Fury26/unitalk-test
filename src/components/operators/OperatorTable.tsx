@@ -1,6 +1,7 @@
 import type { Operator, OperatorAddon } from "@/features/table/types";
 import { formatDate } from "@/utils/formatting";
 import {
+	Avatar,
 	Button,
 	Checkbox,
 	Stack,
@@ -23,6 +24,7 @@ type Props = {
 };
 
 const DEFAULT_COLUMNS = [
+	{ id: "avatar", label: "", sortable: false },
 	{
 		id: "isWorking",
 		label: "Is Working",
@@ -102,7 +104,10 @@ export function OperatorTable({
 						{operators.map((operator) => (
 							<TableRow key={operator.id}>
 								<TableCell>
-									<Checkbox checked={operator.isWorking} />
+									<Avatar src={operator.avatar} alt={operator.name} />
+								</TableCell>
+								<TableCell>
+									<Checkbox disabled checked={operator.isWorking} />
 								</TableCell>
 								<TableCell>{operator.name}</TableCell>
 								<TableCell>{formatDate(operator.createdAt, true)}</TableCell>
